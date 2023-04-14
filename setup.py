@@ -2,7 +2,7 @@
 
 from setuptools import setup
 
-__version="0.0.1"
+__version="0.0.2"
 
 _spec = {
     "name" : "oc_orm_initializator",
