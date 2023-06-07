@@ -26,7 +26,7 @@ class OrmInitializator():
             ['django.contrib.contenttypes', 'django.contrib.auth']))
 
         # we have to always use time zone in case we do not want to mix timestamps
-        _all_settings["UZE_TZ"] = True
+        _all_settings["USE_TZ"] = True
         _all_settings["TIME_ZONE"] = additional_settings.get("TIME_ZONE") or "Etc/UTC"
 
         settings.configure(**_all_settings)

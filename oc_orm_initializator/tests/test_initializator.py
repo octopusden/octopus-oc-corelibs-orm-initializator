@@ -39,12 +39,12 @@ class TestOrmInitializator(unittest.TestCase):
                             'options': '-c search_path=test_schema'}}},
                 USE_TZ=True,
                 TIME_ZONE='Etc/UTC',
-                INSTALLED_APPS=[
+                INSTALLED_APPS=list(set([
                     "test_app",
                     "another_test_app",
                     "yet_another_test_app",
                     'django.contrib.contenttypes',
-                    'django.contrib.auth'])
+                    'django.contrib.auth'])))
 
         django_mock.setup.assert_called_once()
 
@@ -74,12 +74,12 @@ class TestOrmInitializator(unittest.TestCase):
                             'options': '-c search_path=another_test_schema'}}},
                 USE_TZ=True,
                 TIME_ZONE='Etc/UTC',
-                INSTALLED_APPS=[
+                INSTALLED_APPS=list(set([
                     'test_app', 
                     'another_test_app',
                     'yet_another_test_app',
                     'django.contrib.contenttypes',
-                    'django.contrib.auth'])
+                    'django.contrib.auth'])))
 
         django_mock.setup.assert_called_once()
 
