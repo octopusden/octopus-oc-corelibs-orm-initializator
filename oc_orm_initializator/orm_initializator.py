@@ -3,6 +3,7 @@ import urllib.parse as urlparse
 import django
 from django.conf import settings
 import posixpath
+from copy import deepcopy
 
 class OrmInitializator():
     """
@@ -17,13 +18,18 @@ class OrmInitializator():
         :param list installed_apps: list of installed django applications
         :param additional_settings: Additional settings for DB connection
         """
-        settings.configure(
-            DATABASES=self._fill_db_dictionary(url=url, user=user, password=password),
-            USE_TZ=True,
-            TIME_ZONE='Etc/UTC',
-            INSTALLED_APPS=installed_apps + ['django.contrib.contenttypes', 'django.contrib.auth'],
-            **additional_settings
-        )
+        _all_settings = deepcopy(additional_settings)
+        _all_settings["DATABASES"] = self._fill_db_dictionary(url=url, user=user, password=password)
+
+        # avoid applications duplication
+        _all_settings["INSTALLED_APPS"] = list(set(installed_apps + 
+            ['django.contrib.contenttypes', 'django.contrib.auth']))
+
+        # we have to always use time zone in case we do not want to mix timestamps
+        _all_settings["USE_TZ"] = True
+        _all_settings["TIME_ZONE"] = additional_settings.get("TIME_ZONE") or "Etc/UTC"
+
+        settings.configure(**_all_settings)
 
         django.setup()
     
